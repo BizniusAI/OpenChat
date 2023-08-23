@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-3v$%9tbrdnch+r&cv5p_30hcv363a*#zw_^-1s#76yh!$ej+x3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Use /tmp as the temporary media directory
 # MEDIA_ROOT = '/tmp/'

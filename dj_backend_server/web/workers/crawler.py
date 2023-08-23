@@ -49,7 +49,9 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
     html = get_normalized_content(html)
     
     # Save the HTML content to a local file in /tmp directory
-    file_name = str(uuid4()) + ".txt"
+    page_id = uuid4()
+    file_name = str(page_id) + ".txt"
+    print("file_name: ", file_name)
     folder_name = os.path.join("website_data_sources", str(data_source_id))
     file_path = os.path.join(folder_name, file_name)
     file_content = ContentFile(html.encode("utf-8"))
@@ -61,12 +63,13 @@ def store_crawled_page_content_to_database(url, response, chatbot_id, data_sourc
     # Create a CrawledPages object and save it to the database
     try:
         CrawledPages.objects.create(
+            id=page_id,
             url=url,
             status_code=response.status_code,
             chatbot_id=chatbot_id,
             title=title,  
             website_data_source_id=data_source_id,
-            content_file=file_path,
+            # content_file=file_path,
         )
     except Exception as e:
         print("Error creating CrawledPages object: ", e)
