@@ -14,18 +14,34 @@ def get_chat_history_for_retrieval_chain(session_id: str, limit: Optional[int] =
     
     # Query and limit results if a limit is provided
     query = ChatHistory.objects.filter(session_id=session_id).order_by('created_at')
-    if limit:
-        query = query[:limit]
-        
+
+    print("Chat history query: ", query)
+
+    # if limit:
+    #     query = query[:limit]
+    if not query:
+        return []
+
     chat_history = []
+    pending_user_query = None
 
-    user_query = None
     for entry in query:
-        if entry.from_user:
-            user_query = entry.message
+        print(f"### Entry from user: {entry.from_user}, Message: {entry.message}")
+        from_user = entry.from_user == "True"  # Convert the string to a boolean
+        if from_user:
+            pending_user_query = entry.message
+            print("### pending user query: ", pending_user_query)
         else:
-            if user_query is not None:
-                chat_history.append((user_query, entry.message))
-                user_query = None
+            bot_response = entry.message or "No response from bot"
+            print("### bot response: ", bot_response)
+            if pending_user_query:
+                chat_history.append((pending_user_query, bot_response))
+                print("### newly added tuple, and set pending_user_query to none: ", (pending_user_query, bot_response))
+                pending_user_query = None
 
-    return chat_history
+    # Handle any remaining unmatched user query
+    if pending_user_query:
+        chat_history.append((pending_user_query, "No response from bot"))
+        print("### newly added tuple: ", (pending_user_query, "No response from bot"))
+
+    return chat_history[-limit:] if limit else chat_history
