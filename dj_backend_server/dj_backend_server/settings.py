@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'dj_backend_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -162,12 +162,29 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
-        'USER': os.environ.get('DATABASE_USER', 'myuser'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
+        'NAME': os.environ.get('DATABASE_NAME', 'openchat'),
+        'USER': os.environ.get('DATABASE_USER', 'dbuser'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'dbpass'),
         'HOST': os.environ.get('DATABASE_HOST', 'mysql'),
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
     }
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
