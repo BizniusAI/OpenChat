@@ -11239,18 +11239,7 @@ function N5(e) {
 
 function u1(e) {
     return yn({
-        tag: "svg",
-        attr: {
-            fill: "currentColor",
-            viewBox: "0 0 16 16"
-        },
-        child: [{
-            tag: "path",
-            attr: {
-                fillRule: "evenodd",
-                d: "M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-            }
-        }]
+        tag: "svg"
     })(e)
 }
 
@@ -11394,15 +11383,15 @@ function H5({
 }) {
     const [n, t] = Ak(!0), i = hf(), [, r] = mf(), a = e && n, o = ua(), s = or();
     return b.jsx("header", {
-        className: "openchat-fade-in-top openchat-border-b openchat-border-b-black/10 openchat-w-full openchat-p-2",
+        className: "openchat-fade-in-top openchat-h-18 openchat-border-b openchat-border-b-black/10 openchat-w-full openchat-p-2",
         children: b.jsxs("div", {
-            className: hn("openchat-w-full openchat-flex openchat-items-start openchat-gap-3 openchat-relative openchat-transition-all", a ? "openchat-flex-row" : "openchat-flex-col"),
+            className: hn("openchat-w-full openchat-h-12 openchat-flex openchat-items-start openchat-gap-3 openchat-relative openchat-transition-all", a ? "openchat-flex-row" : "openchat-flex-col"),
             children: [b.jsx("button", {
                 onClick: () => i(-1),
-                className: "openchat-w-12 openchat-h-12 openchat-shrink-0 openchat-rounded-xl flex-center openchat-text-xl openchat-text-primary hover:openchat-bg-primary-light openchat-transition-all",
-                children: b.jsx("span", {
-                    children: b.jsx(u1, {})
-                })
+                // className: "openchat-w-12 openchat-h-12 openchat-shrink-0 flex-center openchat-text-primary hover:openchat-bg-primary-light openchat-transition-all",
+                // children: b.jsx("span", {
+                //     children: b.jsx(u1, {})
+                // })
             }), b.jsxs("button", {
                 onClick: t,
                 className: hn("openchat-text-white openchat-h-12 openchat-shrink-0 openchat-bg-transparent openchat-leading-none openchat-transition-all openchat-p-1.5 openchat-border-none openchat-rounded-lg openchat-flex openchat-items-center openchat-gap-3 openchat-flex-1", !a && "openchat-hidden openchat-pointer-events-none", e && "hover:openchat-bg-black/20"),
@@ -11427,35 +11416,6 @@ function H5({
             }), !a && b.jsx("div", {
                 className: "fade-in openchat-px-2 openchat-py-1 openchat-font-bold openchat-text-center openchat-text-lg openchat-overflow-hidden openchat-truncate openchat-absolute openchat-left-1/2 openchat-top-6 -openchat-translate-x-1/2 -openchat-translate-y-1/2",
                 children: o == null ? void 0 : o.bot_name
-            }), !a && b.jsx("button", {
-                onClick: t,
-                style: {
-                    animationDuration: "0.1s"
-                },
-                className: hn("fade-in openchat-w-full openchat-p-2 openchat-transition-colors openchat-rounded-lg openchat-pointer-events-none", e && "hover:openchat-bg-black/20 openchat-pointer-events-auto"),
-                children: b.jsxs("div", {
-                    className: "openchat-w-full openchat-flex openchat-items-center openchat-flex-col openchat-text-sm openchat-text-black",
-                    children: [b.jsxs("div", {
-                        className: "openchat-flex openchat-items-center",
-                        children: [b.jsx("div", {
-                            className: "openchat-h-12 openchat-w-12 openchat-shrink-0 openchat-bg-black/50 openchat-rounded-full openchat-static openchat-z-[2]"
-                        }), b.jsx("div", {
-                            className: "openchat-bg-primary openchat-rounded-lg openchat-p-3 openchat-text-4xl openchat-text-white -openchat-mx-2 openchat-border-4 openchat-border-white openchat-static openchat-z-[3]",
-                            children: b.jsx(rc, {})
-                        }), b.jsx("div", {
-                            className: "openchat-h-12 openchat-w-12 openchat-shrink-0 openchat-bg-black/50 openchat-rounded-full openchat-static openchat-z-[2]"
-                        })]
-                    }), b.jsxs("div", {
-                        className: "openchat-mt-1.5",
-                        children: [b.jsx("h2", {
-                            className: "openchat-mb-1",
-                            children: "Ask our bot a question"
-                        }), b.jsx("p", {
-                            className: "openchat-text-accent2",
-                            children: "The team can help if needed"
-                        })]
-                    })]
-                })
             }), !(s != null && s.isFullScreen) && b.jsx("button", {
                 onClick: r,
                 className: hn("close-btn openchat-w-12 sm:openchat-hidden openchat-h-12 openchat-shrink-0 openchat-rounded-xl openchat-flex openchat-items-center openchat-justify-center openchat-text-xl openchat-text-primary hover:openchat-bg-black/20 openchat-transition-all", !a && "openchat-absolute openchat-right-0 "),
@@ -54625,7 +54585,7 @@ function JR() {
                     children: [b.jsx(pr, {
                         caseSensitive: !0,
                         path: "",
-                        element: b.jsx(L5, {})
+                        element: b.jsx(qR, {})
                     }), b.jsx(pr, {
                         caseSensitive: !0,
                         path: "articles/*",
