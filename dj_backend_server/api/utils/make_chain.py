@@ -35,12 +35,13 @@ def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_promp
     template = get_qa_prompt_by_mode(mode, initial_prompt=initial_prompt)
     prompt = PromptTemplate.from_template(template)
 
-    condense_prompt_template = """You are responsible for transforming a chat history and a follow-up question into a summary and the original follow-up input, both presented in a structured format using bullet points. Please adhere to the following guidelines: 1. **Context**: Summarize the chat history, focusing specifically on the latter part of the conversation. Be as specific as possible in your summary without sacrificing conciseness. 2. 3. **Word Limit**: Ensure the summary and the original follow-up input does not exceed 100 words.
+    condense_prompt_template = """
+    You are responsible for transforming a chat history into a summary and output summary and exact follow-up input. Please adhere to the following guidelines: 1. **Context**: Summarize the chat history. Be as specific as possible in your summary without sacrificing conciseness. 2. **Word Limit**: Ensure the summary and the original follow-up input does not exceed 100 words.
 
     Chat History:
-    {chat_history}
-    Follow Up Input: {question}
-    Summary and the original follow-up input:
+    [[[ {chat_history} ]]]
+    Follow-up input: [[[ {question} ]]]
+    Summary and the exact follow-up input:
 """
     condense_prompt = PromptTemplate.from_template(template=condense_prompt_template)
 

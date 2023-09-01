@@ -81,7 +81,7 @@ def get_completion_response(vector_store, mode, initial_prompt, sanitized_questi
         response_text = response['answer']
     elif chain_type == 'conversation_retrieval':
         chain = getConversationRetrievalChain(vector_store, mode, initial_prompt)
-        chat_history = get_chat_history_for_retrieval_chain(session_id, limit=40)
+        chat_history = get_chat_history_for_retrieval_chain(session_id, limit=5)
         print("### chat_history from calling get_completion_response: ", chat_history)
         response = chain({"question": sanitized_question, "chat_history": chat_history}, return_only_outputs=False)
         print("### response from calling get_completion_response: ", response)
