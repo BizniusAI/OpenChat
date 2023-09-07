@@ -16,6 +16,11 @@ import traceback
 from web.services.chat_history_service import get_chat_history_for_retrieval_chain
 import os
 
+from api.utils.get_openai_llm import get_llm
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+from langchain.prompts import PromptTemplate
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -71,6 +76,11 @@ def chat(request):
         logger.error(traceback.format_exc())
         return JsonResponse({'error': 'An error occurred'}, status=500)
 
+def save_chat_to_memory(chat_history, memory):
+    for chat in chat_history:
+        input_text, output_text = chat
+        memory.save_context({"input": input_text}, {"output": output_text})
+
 
 def get_completion_response(vector_store, mode, initial_prompt, sanitized_question, session_id):
     chain_type = os.getenv("CHAIN_TYPE", "conversation_retrieval")
@@ -79,6 +89,24 @@ def get_completion_response(vector_store, mode, initial_prompt, sanitized_questi
         chain = getRetrievalQAWithSourcesChain(vector_store, mode, initial_prompt)
         response = chain({"question": sanitized_question}, return_only_outputs=True)
         response_text = response['answer']
+    elif chain_type == 'conversation':
+
+        chat_history = get_chat_history_for_retrieval_chain(session_id, limit=2)
+
+        llm = get_llm()
+        memory = ConversationBufferMemory(memory_key="chat_history")
+        prompt = PromptTemplate.from_template(initial_prompt)
+        chain = LLMChain(
+            llm=llm,
+            prompt=prompt,
+            memory=memory,
+            verbose=True
+        )
+        save_chat_to_memory(chat_history, memory)
+
+        response = chain({"question": sanitized_question}, return_only_outputs=False)
+        print("### response from calling get_completion_response: ", response)
+        response_text = response['text']
     elif chain_type == 'conversation_retrieval':
         chain = getConversationRetrievalChain(vector_store, mode, initial_prompt)
         chat_history = get_chat_history_for_retrieval_chain(session_id, limit=5)

@@ -36,12 +36,13 @@ def getConversationRetrievalChain(vector_store: VectorStore, mode, initial_promp
     prompt = PromptTemplate.from_template(template)
 
     condense_prompt_template = """
-    You are responsible for transforming a chat history into a summary and output summary and exact follow-up input. Please adhere to the following guidelines: 1. **Context**: Summarize the chat history. Be as specific as possible in your summary without sacrificing conciseness. 2. **Word Limit**: Ensure the summary and the original follow-up input does not exceed 100 words.
-
-    Chat History:
-    [[[ {chat_history} ]]]
-    Follow-up input: [[[ {question} ]]]
-    Summary and the exact follow-up input:
+    Your primary task is to identify and reproduce the content enclosed within triple square brackets ([[[]]]). It's essential to focus solely on the content inside these brackets without interpreting its meaning.
+    -----------------
+    Extracted Content: 
+    [[[
+    {chat_history}
+Human: {question}
+    ]]]
 """
     condense_prompt = PromptTemplate.from_template(template=condense_prompt_template)
 
