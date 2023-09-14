@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from corsheaders.defaults import default_headers
 from os import path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +32,17 @@ SECRET_KEY = 'django-insecure-3v$%9tbrdnch+r&cv5p_30hcv363a*#zw_^-1s#76yh!$ej+x3
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://app.biznius.ai']
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = ['https://app.biznius.ai']
+    
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "x-bot-token",
+)
 
 # Use /tmp as the temporary media directory
 # MEDIA_ROOT = '/tmp/'
@@ -46,13 +58,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'api',
-    'management'
+    'management',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
