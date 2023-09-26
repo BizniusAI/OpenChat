@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
@@ -72,14 +74,39 @@ def init_chat(request):
         "initial_questions": []
     })
 
+@require_GET
+def get_chat_usage(request):
+    bot_token = request.headers.get('X-Bot-Token')
+    bot = get_object_or_404(Chatbot, token=bot_token)
+
+    end_date = datetime.today().date() + timedelta(days=1)
+    start_date = end_date - timedelta(days=7)
+    chat_usage = ChatHistory.objects.filter(created_at__range=[start_date, end_date], chatbot_id=bot.id, from_user=True).count()
+
+    return JsonResponse({
+        "chat_usage": chat_usage,
+        "chat_limit": 1000
+    })
+
 @csrf_exempt
 @require_POST
 def send_chat(request):
     try:
         # You can add additional validation for 'history' and 'content_type' if needed.
-
         bot_token = request.headers.get('X-Bot-Token')
         bot = get_object_or_404(Chatbot, token=bot_token)
+
+        end_date = datetime.today().date()
+        start_date = end_date - timedelta(days=7)
+        chat_usage = ChatHistory.objects.filter(created_at__range=[start_date, end_date], chatbot_id=bot.id, from_user=True).count()
+
+        if chat_usage >= 1000:
+            return JsonResponse({
+                "type": "text",
+                "response": {
+                    "text": "You have reached your chat limit for this week. Please contact admin for more information. **code: b403**"
+                }
+            }, status=400)
 
         data = json.loads(request.body)
         # Validate the request data

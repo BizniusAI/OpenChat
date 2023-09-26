@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.http import JsonResponse, HttpResponseRedirect
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -156,7 +157,7 @@ def send_message(request, token):
         'sources': bot_response['sources'],
     })
 
-
+@xframe_options_exempt
 def get_chat_view(request, token):
     # Find the chatbot by token
     bot = get_object_or_404(Chatbot, token=token)
