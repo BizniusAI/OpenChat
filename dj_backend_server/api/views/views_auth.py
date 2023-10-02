@@ -1,15 +1,14 @@
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import PasswordResetForm
+from django.urls import reverse
 
 def signin(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('home')  # Redirect to the homepage or any other desired page
+            return redirect('home')
     else:
         form = AuthenticationForm()
 
@@ -21,7 +20,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Redirect to the homepage or any other desired page
+            return redirect('home')
     else:
         form = UserCreationForm()
 
@@ -32,7 +31,7 @@ def reset_password(request):
         form = PasswordResetForm(request.POST)
         if form.is_valid():
             form.save()
-            # You can add some success message here or redirect to a success page
+            # You can add a success message here or redirect to a success page
     else:
         form = PasswordResetForm()
 

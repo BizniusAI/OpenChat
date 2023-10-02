@@ -16,8 +16,6 @@ def website_handler_task(shared_folder, namespace):
 def codebase_handler_task(repo_path, namespace):
     return codebase_handler(repo_path=repo_path, namespace=namespace)
 
-
-
 @shared_task
 def start_recursive_crawler_task(sender, data_source_id, chatbot_id):
     return start_recursive_crawler(data_source_id, chatbot_id)

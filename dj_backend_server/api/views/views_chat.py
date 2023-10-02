@@ -1,22 +1,24 @@
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from langchain import QAWithSourcesChain
-
-from api.utils import get_vector_store
-from api.utils.make_chain import getConversationRetrievalChain, getRetrievalQAWithSourcesChain
-import json
-from django.views.decorators.csrf import csrf_exempt
-from api.interfaces import StoreOptions
-from web.models.chat_histories import ChatHistory
-from django.shortcuts import get_object_or_404
-from web.models.chatbot import Chatbot
-from uuid import uuid4
 import logging
 import traceback
-from web.services.chat_history_service import get_chat_history_for_retrieval_chain
 import os
-
 from dotenv import load_dotenv
+from uuid import uuid4
+import json
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
+from langchain import QAWithSourcesChain
+from api.interfaces import StoreOptions
+from api.utils import get_vector_store
+from api.utils.make_chain import getConversationRetrievalChain, getRetrievalQAWithSourcesChain
+from web.models.chat_histories import ChatHistory
+from web.models.chatbot import Chatbot
+from web.services.chat_history_service import get_chat_history_for_retrieval_chain
+
+
+
+# Load environment variables from a .env file
 load_dotenv()
 
 logger = logging.getLogger(__name__)
