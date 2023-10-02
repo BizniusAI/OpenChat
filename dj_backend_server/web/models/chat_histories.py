@@ -16,16 +16,16 @@ class ChatHistory(models.Model):
         self.id = _id
 
     def is_from_user(self):
-        return self.from_user
+        return self.from_user == 'True'
 
     def is_from_bot(self):
-        return not self.from_user
+        return self.from_user == 'False'
 
     def set_from_user(self):
-        self.from_user = True
+        self.from_user = 'True'
 
     def set_from_bot(self):
-        self.from_user = False
+        self.from_user = 'False'
 
     def set_message(self, message):
         self.message = message

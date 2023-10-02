@@ -1,4 +1,3 @@
-# use the dockerfile provided at root, this is only for development purposes and will be deleted
 version: '3.9'
 services:
   mysql:
@@ -28,26 +27,28 @@ services:
     networks:
       - openchat_network
 
-  # web:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8000:8000"
-  #   # volumes:
-  #   #   - .:/app
-  #   depends_on:
-  #     - mysql
-  #   env_file:
-  #     - .env.docker
-  #   command: >
-  #     sh -c "python manage.py sync_models &&
-  #            python manage.py runserver 0.0.0.0:8000"
-  #   networks:
-  #     - openchat_network
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
+  web:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     ports:
+       - "8000:8000"
+     volumes:
+       - .:/app
+       - ./wait-for-it.sh:/app/wait-for-it.sh  # Mount the wait-for-it script
+     depends_on:
+       - mysql
+     env_file:
+       - .env.docker
+     command: >
+       sh -c "./wait-for-it.sh mysql:3306 --timeout=30 -- 
+              python manage.py sync_models &&
+              python manage.py runserver 0.0.0.0:8000"
+     networks:
+       - openchat_network
+     dns:
+       - 8.8.8.8
+       - 8.8.4.4
 
   adminer:
     image: adminer
@@ -60,24 +61,23 @@ services:
     networks:
       - openchat_network
   
-  # celery_worker:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: myproject_celery
-  #   # volumes:
-  #   #   - .:/app
-  #   depends_on:
-  #     - web
-  #   env_file:
-  #     - .env.docker
-  #   command: celery -A dj_backend_server worker --loglevel=info
-  #   networks:
-  #     - openchat_network
-  #   dns:
-  #     - 8.8.8.8
-  #     - 8.8.4.4
-
+  celery_worker:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     container_name: myproject_celery
+     volumes:
+       - .:/app
+     depends_on:
+       - web
+     env_file:
+       - .env.docker
+     command: celery -A dj_backend_server worker --loglevel=debug
+     networks:
+       - openchat_network
+     dns:
+       - 8.8.8.8
+       - 8.8.4.4
 
   redis:
     image: redis:latest

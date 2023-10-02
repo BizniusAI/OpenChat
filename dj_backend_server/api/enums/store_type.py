@@ -1,5 +1,14 @@
 from enum import Enum
 
 class StoreType(Enum):
-  PINECONE = 'PINECONE'
-  QDRANT = 'QDRANT'
+    """
+    Enumeration of available store types.
+    """
+    PINECONE = 'PINECONE'
+    """
+    Pinecone vector store.
+    """
+    QDRANT = 'QDRANT'
+    """
+    Qdrant vector store.
+    """

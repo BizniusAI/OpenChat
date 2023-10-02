@@ -94,6 +94,9 @@ def update_character_settings(request, id):
 
 @require_POST
 def send_message(request, token):
+
+    print("############### Testing ###############")
+
     # Find the chatbot by token
     bot = get_object_or_404(Chatbot, token=token)
 
@@ -102,7 +105,7 @@ def send_message(request, token):
     session_id = get_session_id(request=request, bot_id=bot.id)
     history = ChatHistory.objects.filter(session_id=session_id)
 
-    print(history)
+    print("history: ", history)
     mode = request.POST.get('mode')
     initial_prompt = bot.prompt_message
 
@@ -118,6 +121,9 @@ def send_message(request, token):
             'mode': mode,
             'initial_prompt': initial_prompt,
         }, timeout=5)
+
+        print("response: ", response)
+
         response.raise_for_status()
     except requests.RequestException as e:
         return HttpResponseServerError('Something went wrong')

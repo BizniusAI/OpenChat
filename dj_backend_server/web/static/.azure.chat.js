@@ -8736,7 +8736,7 @@ function gx(e) {
         },
         createHref: d,
         createURL(c) {
-            return new URL(d(c), "http://localhost:8000/api")
+            return new URL(d(c), "https://app.biznius.ai/api")
         },
         encodeLocation(c) {
             let h = typeof c == "string" ? ar(c) : c;
@@ -11048,7 +11048,7 @@ function z5({
 }) {
     const n = or(),
         t = R5.create({
-            baseURL: "http://localhost:8000/api"
+            baseURL: "https://app.biznius.ai/api"
         });
     return n != null && n.token ? t.defaults.headers["X-Bot-Token"] = n == null ? void 0 : n.token : console.warn("No token!"), b.jsx(nb.Provider, {
         value: {
@@ -26390,8 +26390,8 @@ function Xc(e = {}) {
 function mj() {
     return Date.now()
 }
-const vj = "http://localhost:8000/static/submit.3abafccd-cfb52721.mp3",
-    gj = "http://localhost:8000/static/operator.2b750c4a-a89eff38.mp3",
+const vj = "https://app.biznius.ai/static/submit.3abafccd-cfb52721.mp3",
+    gj = "https://app.biznius.ai/static/operator.2b750c4a-a89eff38.mp3",
     w3 = k.createContext(void 0);
 
 function yj() {

@@ -15,6 +15,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from corsheaders.defaults import default_headers
 from os import path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +31,18 @@ SECRET_KEY = 'django-insecure-3v$%9tbrdnch+r&cv5p_30hcv363a*#zw_^-1s#76yh!$ej+x3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://app.biznius.ai']
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = ['https://app.biznius.ai']
+    
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "x-bot-token",
+)
 
 # Use /tmp as the temporary media directory
 # MEDIA_ROOT = '/tmp/'
@@ -46,13 +58,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'api',
-    'management'
+    'management',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,12 +101,12 @@ WSGI_APPLICATION = 'dj_backend_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -162,12 +176,29 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
-        'USER': os.environ.get('DATABASE_USER', 'myuser'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
+        'NAME': os.environ.get('DATABASE_NAME', 'openchat'),
+        'USER': os.environ.get('DATABASE_USER', 'dbuser'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'dbpass'),
         'HOST': os.environ.get('DATABASE_HOST', 'mysql'),
         'PORT': os.environ.get('DATABASE_PORT', '3306'),
     }
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose other engines as well
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
